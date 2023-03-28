@@ -2,6 +2,7 @@
 
 const express = require("express");
 const app = express();
+const logger = require("./logger");
 
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
@@ -10,6 +11,7 @@ module.exports = (db) => {
     app.get("/health", (req, res) => res.send("Healthy"));
 
     app.post("/rides", jsonParser, (req, res) => {
+        logger.info("Inside the rides");
         const startLatitude = Number(req.body.start_lat);
         const startLongitude = Number(req.body.start_long);
         const endLatitude = Number(req.body.end_lat);
@@ -17,7 +19,7 @@ module.exports = (db) => {
         const riderName = req.body.rider_name;
         const driverName = req.body.driver_name;
         const driverVehicle = req.body.driver_vehicle;
-
+        
         if (startLatitude < -90 || startLatitude > 90 || startLongitude < -180 || startLongitude > 180) {
             return res.send({
                 error_code: "VALIDATION_ERROR",
