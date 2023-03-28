@@ -79,14 +79,17 @@ module.exports = (db) => {
     });
 
     app.get("/rides", (req, res) => {
-        db.all("SELECT * FROM Rides", function (err, rows) {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const offset = (page - 1) * limit;
+
+        db.all(`SELECT * FROM Rides LIMIT ${limit} OFFSET ${offset}`, function (err, rows) {
             if (err) {
                 return res.send({
                     error_code: "SERVER_ERROR",
                     message: "Unknown error"
                 });
             }
-
             if (rows.length === 0) {
                 return res.send({
                     error_code: "RIDES_NOT_FOUND_ERROR",
