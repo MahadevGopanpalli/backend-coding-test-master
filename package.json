@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "nyc mocha tests",
-    "start": "nodemon --exec 'eslint . && node' index.js"
+    "start": "nodemon index.js"
   },
   "keywords": [
     "Xendit"
